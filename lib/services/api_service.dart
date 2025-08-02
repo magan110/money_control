@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import '../models/stock.dart';
 import '../models/news_article.dart';
 import '../models/market_index.dart';
+import '../models/candlestick_data.dart';
 
 class ApiService {
   static const String _alphaVantageKey = 'demo';
@@ -12,6 +13,80 @@ class ApiService {
   static const String _finnhubBase = 'https://finnhub.io/api/v1';
   static const String _marketauxKey = 'demo';
   static const String _marketauxBase = 'https://api.marketaux.com/v1';
+
+  static Future<List<CandlestickData>> getHistoricalData(String symbol, String timeframe) async {
+    try {
+      // For Finnhub, we can use the stock candles endpoint
+      final endTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+      final startTime = _getStartTimeForTimeframe(timeframe, endTime);
+      
+      final response = await http.get(
+        Uri.parse('$_finnhubBase/stock/candle?symbol=$symbol&resolution=${_getResolutionForTimeframe(timeframe)}&from=$startTime&to=$endTime&token=$_finnhubKey'),
+      );
+      
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['s'] == 'ok') {
+          final List<CandlestickData> candlesticks = [];
+          final closes = List<double>.from(data['c'] ?? []);
+          final opens = List<double>.from(data['o'] ?? []);
+          final highs = List<double>.from(data['h'] ?? []);
+          final lows = List<double>.from(data['l'] ?? []);
+          final times = List<int>.from(data['t'] ?? []);
+          
+          for (int i = 0; i < closes.length; i++) {
+            candlesticks.add(CandlestickData(
+              time: DateTime.fromMillisecondsSinceEpoch(times[i] * 1000),
+              open: opens[i],
+              high: highs[i],
+              low: lows[i],
+              close: closes[i],
+            ));
+          }
+          
+          return candlesticks;
+        }
+      }
+    } catch (e) {
+      debugPrint('Error fetching historical data for $symbol: $e');
+    }
+    
+    return _getFallbackHistoricalData(symbol, timeframe);
+  }
+
+  static int _getStartTimeForTimeframe(String timeframe, int endTime) {
+    switch (timeframe) {
+      case '1D':
+        return endTime - (24 * 60 * 60); // 1 day ago
+      case '1W':
+        return endTime - (7 * 24 * 60 * 60); // 1 week ago
+      case '1M':
+        return endTime - (30 * 24 * 60 * 60); // 1 month ago
+      case '3M':
+        return endTime - (90 * 24 * 60 * 60); // 3 months ago
+      case '1Y':
+        return endTime - (365 * 24 * 60 * 60); // 1 year ago
+      default:
+        return endTime - (30 * 24 * 60 * 60); // Default to 1 month
+    }
+  }
+
+  static String _getResolutionForTimeframe(String timeframe) {
+    switch (timeframe) {
+      case '1D':
+        return '5'; // 5-minute intervals
+      case '1W':
+        return '15'; // 15-minute intervals
+      case '1M':
+        return 'D'; // Daily intervals
+      case '3M':
+        return 'D'; // Daily intervals
+      case '1Y':
+        return 'W'; // Weekly intervals
+      default:
+        return 'D'; // Default to daily
+    }
+  }
 
   static Future<List<Stock>> getStocks() async {
     final symbols = ['AAPL', 'GOOGL', 'MSFT', 'TSLA', 'AMZN'];
@@ -115,6 +190,50 @@ class ApiService {
     }
     
     return _getFallbackNews();
+  }
+
+  static List<CandlestickData> _getFallbackHistoricalData(String symbol, String timeframe) {
+    final now = DateTime.now();
+    final candlesticks = <CandlestickData>[];
+    const basePrice = 150.0; // Base price for mock data
+    
+    int days = 30;
+    switch (timeframe) {
+      case '1D':
+        days = 1;
+        break;
+      case '1W':
+        days = 7;
+        break;
+      case '1M':
+        days = 30;
+        break;
+      case '3M':
+        days = 90;
+        break;
+      case '1Y':
+        days = 365;
+        break;
+    }
+    
+    for (int i = days; i >= 0; i--) {
+      final date = now.subtract(Duration(days: i));
+      final randomFactor = (i * 0.5) - (days * 0.25);
+      final open = basePrice + randomFactor + (i % 3 - 1) * 2;
+      final close = open + (i % 5 - 2) * 1.5;
+      final high = [open, close].reduce((a, b) => a > b ? a : b) + (i % 2) * 1.2;
+      final low = [open, close].reduce((a, b) => a < b ? a : b) - (i % 2) * 0.8;
+      
+      candlesticks.add(CandlestickData(
+        time: date,
+        open: open,
+        high: high,
+        low: low,
+        close: close,
+      ));
+    }
+    
+    return candlesticks;
   }
 
   static String _getCompanyName(String symbol) {
