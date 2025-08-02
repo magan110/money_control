@@ -14,6 +14,9 @@ import 'research_screen.dart';
 import 'watchlist_screen.dart';
 import 'sector_analysis_screen.dart';
 import 'mutual_funds_screen.dart';
+import 'loans_screen.dart';
+import 'fixed_deposits_screen.dart';
+import 'forum_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -129,6 +132,30 @@ class _MainScreenState extends State<MainScreen> {
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MutualFundsScreen()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.account_balance_wallet),
+            title: const Text('Loans'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoansScreen()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.savings),
+            title: const Text('Fixed Deposits'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const FixedDepositsScreen()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.forum),
+            title: const Text('Forum'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ForumScreen()));
             },
           ),
         ],

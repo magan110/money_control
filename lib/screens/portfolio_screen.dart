@@ -173,6 +173,8 @@ class PortfolioScreen extends StatelessWidget {
         _buildAssetAllocation(provider),
         const SizedBox(height: 16),
         _buildTopPerformers(provider),
+        const SizedBox(height: 16),
+        _buildPortfolioInsights(provider),
       ],
     );
   }
@@ -284,6 +286,38 @@ class PortfolioScreen extends StatelessWidget {
             )),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildPortfolioInsights(PortfolioProvider provider) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Portfolio Insights', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 12),
+            _buildInsightRow('Diversification Score', '8.5/10', Colors.green),
+            _buildInsightRow('Risk Level', 'Moderate', Colors.orange),
+            _buildInsightRow('Expected Returns', '12-15%', Colors.blue),
+            _buildInsightRow('Holdings Count', '${provider.holdings.length}', Colors.grey),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInsightRow(String label, String value, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: TextStyle(color: Colors.grey[400])),
+          Text(value, style: TextStyle(fontWeight: FontWeight.w500, color: color)),
+        ],
       ),
     );
   }

@@ -32,8 +32,19 @@ class _NewsWebViewScreenState extends State<NewsWebViewScreen> {
         title: Text(widget.article.source),
         actions: [
           IconButton(
+            icon: const Icon(Icons.volume_up),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Text-to-Speech feature coming soon')),
+              );
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Share feature coming soon')),
+              );
             },
           ),
         ],
