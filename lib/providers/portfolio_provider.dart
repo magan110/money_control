@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../models/portfolio_holding.dart';
 import '../data/database_helper.dart';
+import '../services/api_service.dart';
 
 class PortfolioProvider with ChangeNotifier {
   List<PortfolioHolding> _holdings = [];
@@ -27,6 +28,8 @@ class PortfolioProvider with ChangeNotifier {
       if (_holdings.isEmpty) {
         await _addSampleHoldings();
       }
+      
+      await updateCurrentPrices();
     } catch (e) {
       debugPrint('Error loading portfolio: $e');
     } finally {
@@ -117,5 +120,32 @@ class PortfolioProvider with ChangeNotifier {
     var sortedHoldings = List<PortfolioHolding>.from(_holdings);
     sortedHoldings.sort((a, b) => a.gainLossPercent.compareTo(b.gainLossPercent));
     return sortedHoldings.take(3).toList();
+  }
+
+  Future<void> updateCurrentPrices() async {
+    for (var holding in _holdings) {
+      try {
+        final stocks = await ApiService.getStocks();
+        final matchingStock = stocks.firstWhere(
+          (stock) => stock.symbol == holding.symbol,
+          orElse: () => stocks.first,
+        );
+        // Create a new holding with updated price since currentPrice is final
+        final updatedHolding = PortfolioHolding(
+          id: holding.id,
+          symbol: holding.symbol,
+          name: holding.name,
+          quantity: holding.quantity,
+          averagePrice: holding.averagePrice,
+          currentPrice: matchingStock.currentPrice,
+          purchaseDate: holding.purchaseDate,
+        );
+        final index = _holdings.indexOf(holding);
+        _holdings[index] = updatedHolding;
+      } catch (e) {
+        debugPrint('Error updating price for ${holding.symbol}: $e');
+      }
+    }
+    notifyListeners();
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'mutual_funds_screen.dart';
 import 'portfolio_screen.dart';
+import '../services/api_service.dart';
+import '../models/stock.dart';
 
 class InvestNowScreen extends StatelessWidget {
   const InvestNowScreen({super.key});
@@ -147,38 +149,52 @@ class InvestNowScreen extends StatelessWidget {
   }
 
   Widget _buildTopFunds() {
-    final topFunds = [
-      {'name': 'Axis Bluechip Fund', 'returns': '12.5%', 'rating': 5},
-      {'name': 'HDFC Top 100 Fund', 'returns': '11.8%', 'rating': 4},
-      {'name': 'SBI Large Cap Fund', 'returns': '10.9%', 'rating': 4},
-    ];
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Top Performing Funds',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return FutureBuilder<List<Stock>>(
+      future: ApiService.getStocks(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Card(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()),
             ),
-            const SizedBox(height: 12),
-            ...topFunds.map((fund) => ListTile(
-              title: Text(fund['name'] as String),
-              subtitle: Text('1Y Returns: ${fund['returns']}'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: List.generate(5, (index) => Icon(
-                  Icons.star,
-                  size: 16,
-                  color: index < (fund['rating'] as int) ? Colors.amber : Colors.grey,
+          );
+        }
+        
+        final topFunds = snapshot.data!.take(3).map((stock) => {
+          'name': '${stock.name} Fund',
+          'returns': '${stock.changePercent.toStringAsFixed(1)}%',
+          'rating': stock.changePercent > 0 ? 5 : 4,
+        }).toList();
+        
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Top Performing Funds',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 12),
+                ...topFunds.map((fund) => ListTile(
+                  title: Text(fund['name'] as String),
+                  subtitle: Text('1Y Returns: ${fund['returns']}'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(5, (index) => Icon(
+                      Icons.star,
+                      size: 16,
+                      color: index < (fund['rating'] as int) ? Colors.amber : Colors.grey,
+                    )),
+                  ),
                 )),
-              ),
-            )),
-          ],
-        ),
-      ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

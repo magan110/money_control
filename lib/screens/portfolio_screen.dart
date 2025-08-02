@@ -214,8 +214,14 @@ class PortfolioScreen extends StatelessWidget {
   }
 
   List<FlSpot> _generatePortfolioChartData(PortfolioProvider provider) {
+    final baseValue = provider.totalInvestment;
+    final currentValue = provider.totalCurrentValue;
+    final performance = baseValue > 0 ? (currentValue - baseValue) / baseValue : 0.0;
+    
     return List.generate(30, (index) {
-      return FlSpot(index.toDouble(), provider.totalCurrentValue + (index * 1000) - 15000);
+      final dayPerformance = performance * (index / 30.0);
+      final volatility = (index % 3 - 1) * baseValue * 0.01;
+      return FlSpot(index.toDouble(), baseValue + (baseValue * dayPerformance) + volatility);
     });
   }
 
