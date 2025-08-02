@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../models/news_article.dart';
-import '../services/mock_data_service.dart';
+import '../services/api_service.dart';
 
 class NewsProvider with ChangeNotifier {
   List<NewsArticle> _articles = [];
@@ -32,8 +32,7 @@ class NewsProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      await Future.delayed(const Duration(seconds: 1));
-      _articles = MockDataService.getMockNews();
+      _articles = await ApiService.getFinancialNews();
     } catch (e) {
       debugPrint('Error loading news: $e');
     } finally {

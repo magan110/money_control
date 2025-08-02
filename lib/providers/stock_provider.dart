@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../models/stock.dart';
-import '../services/mock_data_service.dart';
+import '../services/api_service.dart';
 
 class StockProvider with ChangeNotifier {
   List<Stock> _stocks = [];
@@ -25,8 +25,7 @@ class StockProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      await Future.delayed(const Duration(seconds: 1));
-      _stocks = MockDataService.getMockStocks();
+      _stocks = await ApiService.getStocks();
     } catch (e) {
       debugPrint('Error loading stocks: $e');
     } finally {

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../models/market_index.dart';
-import '../services/mock_data_service.dart';
+import '../services/api_service.dart';
 
 class MarketProvider with ChangeNotifier {
   List<MarketIndex> _indices = [];
@@ -14,8 +14,7 @@ class MarketProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      await Future.delayed(const Duration(milliseconds: 500));
-      _indices = MockDataService.getMockIndices();
+      _indices = await ApiService.getMarketIndices();
     } catch (e) {
       debugPrint('Error loading market data: $e');
     } finally {
