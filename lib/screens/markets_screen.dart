@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/stock_provider.dart';
 import '../widgets/stock_tile.dart';
+import 'stock_detail_screen.dart';
 
 class MarketsScreen extends StatefulWidget {
   const MarketsScreen({super.key});
@@ -70,7 +71,11 @@ class _MarketsScreenState extends State<MarketsScreen> with SingleTickerProvider
               return StockTile(
                 stock: stock,
                 onTap: () {
-                  // Navigate to stock details
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => StockDetailScreen(stock: stock),
+                    ),
+                  );
                 },
               );
             },
@@ -99,7 +104,11 @@ class _MarketsScreenState extends State<MarketsScreen> with SingleTickerProvider
               return StockTile(
                 stock: stock,
                 onTap: () {
-                  // Navigate to stock details
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => StockDetailScreen(stock: stock),
+                    ),
+                  );
                 },
               );
             },
@@ -128,7 +137,11 @@ class _MarketsScreenState extends State<MarketsScreen> with SingleTickerProvider
               return StockTile(
                 stock: stock,
                 onTap: () {
-                  // Navigate to stock details
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => StockDetailScreen(stock: stock),
+                    ),
+                  );
                 },
               );
             },

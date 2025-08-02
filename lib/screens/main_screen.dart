@@ -12,6 +12,8 @@ import 'news_screen.dart';
 import 'portfolio_screen.dart';
 import 'research_screen.dart';
 import 'watchlist_screen.dart';
+import 'sector_analysis_screen.dart';
+import 'mutual_funds_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -58,6 +60,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: _buildNavigationDrawer(),
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,
@@ -98,6 +101,35 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.bookmark),
             label: 'Watchlist',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavigationDrawer() {
+    return Drawer(
+      child: ListView(
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(color: Color(0xFF1E1E1E)),
+            child: Text('MoneyControl', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          ),
+          ListTile(
+            leading: const Icon(Icons.analytics_outlined),
+            title: const Text('Sector Analysis'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SectorAnalysisScreen()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.account_balance),
+            title: const Text('Mutual Funds'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MutualFundsScreen()));
+            },
           ),
         ],
       ),

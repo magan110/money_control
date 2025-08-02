@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:fl_chart/fl_chart.dart';
 import '../providers/portfolio_provider.dart';
 import '../models/portfolio_holding.dart';
 
@@ -35,6 +36,8 @@ class PortfolioScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildPortfolioSummary(context, portfolioProvider),
+                  const SizedBox(height: 20),
+                  _buildPortfolioAnalytics(context, portfolioProvider),
                   const SizedBox(height: 20),
                   _buildHoldingsList(context, portfolioProvider),
                 ],
@@ -128,6 +131,7 @@ class PortfolioScreen extends StatelessWidget {
     if (provider.holdings.isEmpty) {
       return const Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.pie_chart, size: 64, color: Colors.grey),
             SizedBox(height: 16),
@@ -158,6 +162,129 @@ class PortfolioScreen extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+
+  Widget _buildPortfolioAnalytics(BuildContext context, PortfolioProvider provider) {
+    return Column(
+      children: [
+        _buildPerformanceChart(provider),
+        const SizedBox(height: 16),
+        _buildAssetAllocation(provider),
+        const SizedBox(height: 16),
+        _buildTopPerformers(provider),
+      ],
+    );
+  }
+
+  Widget _buildPerformanceChart(PortfolioProvider provider) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Portfolio Performance', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 16),
+            SizedBox(
+              height: 200,
+              child: LineChart(
+                LineChartData(
+                  gridData: const FlGridData(show: true),
+                  titlesData: const FlTitlesData(show: true),
+                  borderData: FlBorderData(show: true),
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: _generatePortfolioChartData(provider),
+                      isCurved: true,
+                      color: provider.isOverallProfit ? Colors.green : Colors.red,
+                      barWidth: 2,
+                      dotData: const FlDotData(show: false),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<FlSpot> _generatePortfolioChartData(PortfolioProvider provider) {
+    return List.generate(30, (index) {
+      return FlSpot(index.toDouble(), provider.totalCurrentValue + (index * 1000) - 15000);
+    });
+  }
+
+  Widget _buildAssetAllocation(PortfolioProvider provider) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Asset Allocation', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 16),
+            SizedBox(
+              height: 200,
+              child: PieChart(
+                PieChartData(
+                  sections: _createAssetAllocationSections(provider),
+                  centerSpaceRadius: 40,
+                  sectionsSpace: 2,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<PieChartSectionData> _createAssetAllocationSections(PortfolioProvider provider) {
+    final colors = [Colors.blue, Colors.green, Colors.orange, Colors.purple, Colors.red];
+    final total = provider.totalCurrentValue;
+    
+    return provider.holdings.asMap().entries.map((entry) {
+      final index = entry.key;
+      final holding = entry.value;
+      final percentage = (holding.totalValue / total * 100);
+      
+      return PieChartSectionData(
+        color: colors[index % colors.length],
+        value: holding.totalValue,
+        title: '${percentage.toStringAsFixed(1)}%',
+        radius: 60,
+        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+      );
+    }).toList();
+  }
+
+  Widget _buildTopPerformers(PortfolioProvider provider) {
+    final topPerformers = provider.getTopPerformers();
+    
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Top Performers', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 12),
+            ...topPerformers.map((holding) => ListTile(
+              title: Text(holding.symbol),
+              trailing: Text(
+                '${holding.isProfit ? '+' : ''}${holding.gainLossPercent.toStringAsFixed(2)}%',
+                style: TextStyle(
+                  color: holding.isProfit ? Colors.green : Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )),
+          ],
+        ),
+      ),
     );
   }
 

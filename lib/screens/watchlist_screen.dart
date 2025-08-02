@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/stock_provider.dart';
 import '../widgets/stock_tile.dart';
+import 'stock_detail_screen.dart';
 
 class WatchlistScreen extends StatelessWidget {
   const WatchlistScreen({super.key});
@@ -75,7 +76,11 @@ class WatchlistScreen extends StatelessWidget {
                   child: StockTile(
                     stock: stock,
                     onTap: () {
-                      // Navigate to stock details
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => StockDetailScreen(stock: stock),
+                        ),
+                      );
                     },
                   ),
                 );

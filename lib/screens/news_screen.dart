@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/news_provider.dart';
 import '../widgets/news_card.dart';
+import 'news_webview_screen.dart';
 
 class NewsScreen extends StatelessWidget {
   const NewsScreen({super.key});
@@ -92,7 +93,11 @@ class NewsScreen extends StatelessWidget {
               return NewsCard(
                 article: article,
                 onTap: () {
-                  // Navigate to article details or open web view
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => NewsWebViewScreen(article: article),
+                    ),
+                  );
                 },
               );
             },
