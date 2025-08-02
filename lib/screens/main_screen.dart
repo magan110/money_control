@@ -14,9 +14,15 @@ import 'research_screen.dart';
 import 'watchlist_screen.dart';
 import 'sector_analysis_screen.dart';
 import 'mutual_funds_screen.dart';
-import 'loans_screen.dart';
-import 'fixed_deposits_screen.dart';
 import 'forum_screen.dart';
+import 'editor_picks_screen.dart';
+import 'tech_screen.dart';
+import 'india_news_screen.dart';
+import 'learning_curve_screen.dart';
+import 'commodities_screen.dart';
+import 'personal_finance_screen.dart';
+import 'videos_screen.dart';
+import 'invest_now_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -119,11 +125,83 @@ class _MainScreenState extends State<MainScreen> {
             child: Text('MoneyControl', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           ),
           ListTile(
-            leading: const Icon(Icons.analytics_outlined),
-            title: const Text('Sector Analysis'),
+            leading: const Icon(Icons.trending_up),
+            title: const Text('Markets'),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SectorAnalysisScreen()));
+              setState(() {
+                _currentIndex = 1;
+              });
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.article),
+            title: const Text('News'),
+            onTap: () {
+              Navigator.of(context).pop();
+              setState(() {
+                _currentIndex = 3;
+              });
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.edit),
+            title: const Text('Editor\'s Picks'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EditorPicksScreen()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.computer),
+            title: const Text('Tech/Startups'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TechScreen()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.flag),
+            title: const Text('India'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const IndiaNewsScreen()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.school),
+            title: const Text('Learning Curve'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LearningCurveScreen()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.pie_chart),
+            title: const Text('Portfolio'),
+            onTap: () {
+              Navigator.of(context).pop();
+              setState(() {
+                _currentIndex = 4;
+              });
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.bookmark),
+            title: const Text('Watchlist'),
+            onTap: () {
+              Navigator.of(context).pop();
+              setState(() {
+                _currentIndex = 6;
+              });
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.grain),
+            title: const Text('Commodities'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CommoditiesScreen()));
             },
           ),
           ListTile(
@@ -136,18 +214,10 @@ class _MainScreenState extends State<MainScreen> {
           ),
           ListTile(
             leading: const Icon(Icons.account_balance_wallet),
-            title: const Text('Loans'),
+            title: const Text('Personal Finance'),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoansScreen()));
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.savings),
-            title: const Text('Fixed Deposits'),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const FixedDepositsScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PersonalFinanceScreen()));
             },
           ),
           ListTile(
@@ -156,6 +226,31 @@ class _MainScreenState extends State<MainScreen> {
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ForumScreen()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.video_library),
+            title: const Text('Videos'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const VideosScreen()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.trending_up),
+            title: const Text('Invest Now'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const InvestNowScreen()));
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.analytics_outlined),
+            title: const Text('Sector Analysis'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SectorAnalysisScreen()));
             },
           ),
         ],
