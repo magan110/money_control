@@ -4,10 +4,13 @@ import '../providers/stock_provider.dart';
 import '../providers/news_provider.dart';
 import '../providers/portfolio_provider.dart';
 import '../providers/market_provider.dart';
+import '../providers/research_provider.dart';
 import 'home_screen.dart';
 import 'markets_screen.dart';
+import 'fo_screen.dart';
 import 'news_screen.dart';
 import 'portfolio_screen.dart';
+import 'research_screen.dart';
 import 'watchlist_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -23,8 +26,10 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const MarketsScreen(),
+    const FOScreen(),
     const NewsScreen(),
     const PortfolioScreen(),
+    const ResearchScreen(),
     const WatchlistScreen(),
   ];
 
@@ -39,12 +44,14 @@ class _MainScreenState extends State<MainScreen> {
     final newsProvider = context.read<NewsProvider>();
     final portfolioProvider = context.read<PortfolioProvider>();
     final marketProvider = context.read<MarketProvider>();
+    final researchProvider = context.read<ResearchProvider>();
 
     await Future.wait([
       stockProvider.loadStocks(),
       newsProvider.loadNews(),
       portfolioProvider.loadPortfolio(),
       marketProvider.loadMarketData(),
+      researchProvider.loadResearchInsights(),
     ]);
   }
 
@@ -73,12 +80,20 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Markets',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.analytics),
+            label: 'F&O',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.article),
             label: 'News',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.pie_chart),
             label: 'Portfolio',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.lightbulb),
+            label: 'Research',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bookmark),

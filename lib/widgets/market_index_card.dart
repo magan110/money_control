@@ -17,9 +17,9 @@ class MarketIndexCard extends StatelessWidget {
       width: 160,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: Colors.grey.shade600),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

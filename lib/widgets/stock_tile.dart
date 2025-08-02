@@ -27,7 +27,7 @@ class StockTile extends StatelessWidget {
         subtitle: Text(
           stock.name,
           style: TextStyle(
-            color: Colors.grey[600],
+            color: Colors.grey[400],
             fontSize: 12,
           ),
         ),

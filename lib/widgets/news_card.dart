@@ -39,7 +39,7 @@ class NewsCard extends StatelessWidget {
                     Text(
                       article.summary,
                       style: TextStyle(
-                        color: Colors.grey[600],
+                        color: Colors.grey[400],
                         fontSize: 12,
                       ),
                       maxLines: 2,
@@ -51,7 +51,7 @@ class NewsCard extends StatelessWidget {
                         Text(
                           article.source,
                           style: TextStyle(
-                            color: Colors.blue[600],
+                            color: Colors.blue[400],
                             fontSize: 11,
                             fontWeight: FontWeight.w500,
                           ),
@@ -75,7 +75,7 @@ class NewsCard extends StatelessWidget {
                 height: 60,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: Colors.grey[300],
+                  color: Colors.grey[600],
                 ),
                 child: const Icon(
                   Icons.article,

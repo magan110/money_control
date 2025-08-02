@@ -4,6 +4,8 @@ import 'providers/stock_provider.dart';
 import 'providers/news_provider.dart';
 import 'providers/portfolio_provider.dart';
 import 'providers/market_provider.dart';
+import 'providers/fo_provider.dart';
+import 'providers/research_provider.dart';
 import 'screens/main_screen.dart';
 
 void main() {
@@ -21,19 +23,22 @@ class MoneyControlApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => NewsProvider()),
         ChangeNotifierProvider(create: (_) => PortfolioProvider()),
         ChangeNotifierProvider(create: (_) => MarketProvider()),
+        ChangeNotifierProvider(create: (_) => FOProvider()),
+        ChangeNotifierProvider(create: (_) => ResearchProvider()),
       ],
       child: MaterialApp(
         title: 'MoneyControl',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
             seedColor: const Color(0xFF1565C0),
-            brightness: Brightness.light,
+            brightness: Brightness.dark,
           ),
           useMaterial3: true,
+          scaffoldBackgroundColor: const Color(0xFF121212),
           appBarTheme: const AppBarTheme(
             centerTitle: false,
             elevation: 0,
-            backgroundColor: Color(0xFF1565C0),
+            backgroundColor: Color(0xFF1E1E1E),
             foregroundColor: Colors.white,
             titleTextStyle: TextStyle(
               color: Colors.white,
@@ -43,6 +48,7 @@ class MoneyControlApp extends StatelessWidget {
           ),
           cardTheme: CardTheme(
             elevation: 2,
+            color: const Color(0xFF1E1E1E),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
@@ -50,6 +56,7 @@ class MoneyControlApp extends StatelessWidget {
           bottomNavigationBarTheme: const BottomNavigationBarThemeData(
             selectedItemColor: Color(0xFF1565C0),
             unselectedItemColor: Colors.grey,
+            backgroundColor: Color(0xFF1E1E1E),
             type: BottomNavigationBarType.fixed,
           ),
         ),
