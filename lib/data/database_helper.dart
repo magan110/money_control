@@ -51,6 +51,29 @@ class DatabaseHelper {
         value TEXT NOT NULL
       )
     ''');
+
+    await db.execute('''
+      CREATE TABLE crypto_holdings(
+        id TEXT PRIMARY KEY,
+        symbol TEXT NOT NULL,
+        name TEXT NOT NULL,
+        quantity REAL NOT NULL,
+        averagePrice REAL NOT NULL,
+        currentPrice REAL NOT NULL,
+        purchaseDate INTEGER NOT NULL
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE crypto_transactions(
+        id TEXT PRIMARY KEY,
+        symbol TEXT NOT NULL,
+        type TEXT NOT NULL,
+        quantity REAL NOT NULL,
+        price REAL NOT NULL,
+        timestamp INTEGER NOT NULL
+      )
+    ''');
   }
 
   Future<void> close() async {

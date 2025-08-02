@@ -5,6 +5,7 @@ import '../providers/news_provider.dart';
 import '../providers/portfolio_provider.dart';
 import '../providers/market_provider.dart';
 import '../providers/research_provider.dart';
+import '../providers/crypto_provider.dart';
 import 'home_screen.dart';
 import 'markets_screen.dart';
 import 'fo_screen.dart';
@@ -23,6 +24,7 @@ import 'commodities_screen.dart';
 import 'personal_finance_screen.dart';
 import 'videos_screen.dart';
 import 'invest_now_screen.dart';
+import 'crypto_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -42,6 +44,7 @@ class _MainScreenState extends State<MainScreen> {
     const PortfolioScreen(),
     const ResearchScreen(),
     const WatchlistScreen(),
+    const CryptoScreen(),
   ];
 
   @override
@@ -56,6 +59,7 @@ class _MainScreenState extends State<MainScreen> {
     final portfolioProvider = context.read<PortfolioProvider>();
     final marketProvider = context.read<MarketProvider>();
     final researchProvider = context.read<ResearchProvider>();
+    final cryptoProvider = context.read<CryptoProvider>();
 
     await Future.wait([
       stockProvider.loadStocks(),
@@ -63,6 +67,7 @@ class _MainScreenState extends State<MainScreen> {
       portfolioProvider.loadPortfolio(),
       marketProvider.loadMarketData(),
       researchProvider.loadResearchInsights(),
+      cryptoProvider.loadCryptocurrencies(),
     ]);
   }
 
@@ -110,6 +115,10 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.bookmark),
             label: 'Watchlist',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.currency_bitcoin),
+            label: 'Crypto',
           ),
         ],
       ),

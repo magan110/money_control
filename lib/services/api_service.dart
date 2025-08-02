@@ -7,6 +7,7 @@ import '../models/market_index.dart';
 import '../models/candlestick_data.dart';
 import '../models/research_insight.dart';
 import '../models/fo_contract.dart';
+import '../models/cryptocurrency.dart';
 
 class ApiService {
   static const String _alphaVantageKey = 'demo';
@@ -15,6 +16,8 @@ class ApiService {
   static const String _finnhubBase = 'https://finnhub.io/api/v1';
   static const String _marketauxKey = 'demo';
   static const String _marketauxBase = 'https://api.marketaux.com/v1';
+  static const String _coinMarketCapKey = 'demo';
+  static const String _coinMarketCapBase = 'https://pro-api.coinmarketcap.com/v1';
 
   static Future<List<CandlestickData>> getHistoricalData(String symbol, String timeframe) async {
     try {
@@ -623,6 +626,113 @@ class ApiService {
         volume: 1500000,
         openInterest: 900000,
         impliedVolatility: 0.0,
+      ),
+    ];
+  }
+
+  static Future<List<Cryptocurrency>> getCryptocurrencies() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$_coinMarketCapBase/cryptocurrency/listings/latest?limit=100'),
+        headers: {
+          'X-CMC_PRO_API_KEY': _coinMarketCapKey,
+          'Accept': 'application/json',
+        },
+      );
+      
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final List<dynamic> cryptoList = data['data'] ?? [];
+        return cryptoList.map((crypto) => Cryptocurrency.fromJson(crypto)).toList();
+      }
+    } catch (e) {
+      debugPrint('Error fetching cryptocurrencies: $e');
+    }
+    
+    return _getFallbackCryptoData();
+  }
+
+  static List<Cryptocurrency> _getFallbackCryptoData() {
+    return [
+      Cryptocurrency(
+        id: 'bitcoin',
+        symbol: 'BTC',
+        name: 'Bitcoin',
+        currentPrice: 43250.00,
+        changeAmount: 1250.00,
+        changePercent: 2.98,
+        dayHigh: 44000.00,
+        dayLow: 42000.00,
+        marketCap: 847000000000,
+        marketCapRank: 1,
+        volume24h: 15000000000,
+        circulatingSupply: 19600000,
+        totalSupply: 21000000,
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png',
+      ),
+      Cryptocurrency(
+        id: 'ethereum',
+        symbol: 'ETH',
+        name: 'Ethereum',
+        currentPrice: 2650.00,
+        changeAmount: -85.50,
+        changePercent: -3.12,
+        dayHigh: 2750.00,
+        dayLow: 2600.00,
+        marketCap: 318000000000,
+        marketCapRank: 2,
+        volume24h: 8500000000,
+        circulatingSupply: 120000000,
+        totalSupply: 120000000,
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
+      ),
+      Cryptocurrency(
+        id: 'binancecoin',
+        symbol: 'BNB',
+        name: 'BNB',
+        currentPrice: 315.75,
+        changeAmount: 8.25,
+        changePercent: 2.68,
+        dayHigh: 320.00,
+        dayLow: 305.00,
+        marketCap: 47000000000,
+        marketCapRank: 4,
+        volume24h: 1200000000,
+        circulatingSupply: 149000000,
+        totalSupply: 200000000,
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+      ),
+      Cryptocurrency(
+        id: 'solana',
+        symbol: 'SOL',
+        name: 'Solana',
+        currentPrice: 98.45,
+        changeAmount: 4.15,
+        changePercent: 4.40,
+        dayHigh: 102.00,
+        dayLow: 94.00,
+        marketCap: 44000000000,
+        marketCapRank: 5,
+        volume24h: 2100000000,
+        circulatingSupply: 447000000,
+        totalSupply: 580000000,
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png',
+      ),
+      Cryptocurrency(
+        id: 'cardano',
+        symbol: 'ADA',
+        name: 'Cardano',
+        currentPrice: 0.385,
+        changeAmount: 0.012,
+        changePercent: 3.22,
+        dayHigh: 0.395,
+        dayLow: 0.370,
+        marketCap: 13500000000,
+        marketCapRank: 8,
+        volume24h: 450000000,
+        circulatingSupply: 35000000000,
+        totalSupply: 45000000000,
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/2010.png',
       ),
     ];
   }

@@ -7,6 +7,7 @@ import 'providers/market_provider.dart';
 import 'providers/fo_provider.dart';
 import 'providers/research_provider.dart';
 import 'providers/loan_provider.dart';
+import 'providers/crypto_provider.dart';
 import 'screens/main_screen.dart';
 
 void main() {
@@ -27,6 +28,7 @@ class MoneyControlApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FOProvider()),
         ChangeNotifierProvider(create: (_) => ResearchProvider()),
         ChangeNotifierProvider(create: (_) => LoanProvider()),
+        ChangeNotifierProvider(create: (_) => CryptoProvider()),
       ],
       child: MaterialApp(
         title: 'MoneyControl',
