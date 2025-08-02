@@ -1,0 +1,170 @@
+import '../models/stock.dart';
+import '../models/news_article.dart';
+import '../models/market_index.dart';
+
+class MockDataService {
+  static List<Stock> getMockStocks() {
+    return [
+      Stock(
+        symbol: 'RELIANCE',
+        name: 'Reliance Industries Ltd',
+        currentPrice: 2456.75,
+        changeAmount: 23.45,
+        changePercent: 0.96,
+        dayHigh: 2478.90,
+        dayLow: 2445.20,
+        openPrice: 2450.00,
+        previousClose: 2433.30,
+        volume: 1234567,
+        marketCap: 16500000000000,
+        sector: 'Oil & Gas',
+      ),
+      Stock(
+        symbol: 'TCS',
+        name: 'Tata Consultancy Services',
+        currentPrice: 3567.80,
+        changeAmount: -45.20,
+        changePercent: -1.25,
+        dayHigh: 3598.50,
+        dayLow: 3556.30,
+        openPrice: 3590.00,
+        previousClose: 3613.00,
+        volume: 987654,
+        marketCap: 13200000000000,
+        sector: 'IT Services',
+      ),
+      Stock(
+        symbol: 'HDFCBANK',
+        name: 'HDFC Bank Ltd',
+        currentPrice: 1678.45,
+        changeAmount: 12.30,
+        changePercent: 0.74,
+        dayHigh: 1685.90,
+        dayLow: 1665.20,
+        openPrice: 1670.00,
+        previousClose: 1666.15,
+        volume: 2345678,
+        marketCap: 12800000000000,
+        sector: 'Banking',
+      ),
+      Stock(
+        symbol: 'INFY',
+        name: 'Infosys Ltd',
+        currentPrice: 1456.20,
+        changeAmount: 18.75,
+        changePercent: 1.30,
+        dayHigh: 1465.80,
+        dayLow: 1445.30,
+        openPrice: 1448.00,
+        previousClose: 1437.45,
+        volume: 1876543,
+        marketCap: 6100000000000,
+        sector: 'IT Services',
+      ),
+      Stock(
+        symbol: 'ICICIBANK',
+        name: 'ICICI Bank Ltd',
+        currentPrice: 987.65,
+        changeAmount: -8.45,
+        changePercent: -0.85,
+        dayHigh: 998.20,
+        dayLow: 985.30,
+        openPrice: 995.00,
+        previousClose: 996.10,
+        volume: 3456789,
+        marketCap: 6900000000000,
+        sector: 'Banking',
+      ),
+    ];
+  }
+
+  static List<NewsArticle> getMockNews() {
+    return [
+      NewsArticle(
+        id: '1',
+        title: 'Sensex hits new all-time high, Nifty crosses 19,000 mark',
+        summary: 'Indian stock markets reached new milestones today with strong buying across sectors.',
+        content: 'The Indian stock markets witnessed a historic day as the BSE Sensex crossed 64,000 for the first time while the NSE Nifty50 breached the 19,000 level. The rally was led by banking and IT stocks with strong institutional buying.',
+        imageUrl: 'https://via.placeholder.com/300x200?text=Market+Rally',
+        sourceUrl: 'https://example.com/news/1',
+        source: 'MoneyControl',
+        publishedAt: DateTime.now().subtract(const Duration(hours: 2)),
+        tags: ['Sensex', 'Nifty', 'Market Rally'],
+        category: 'Markets',
+      ),
+      NewsArticle(
+        id: '2',
+        title: 'RBI keeps repo rate unchanged at 6.5%',
+        summary: 'Reserve Bank of India maintains status quo on interest rates in latest monetary policy.',
+        content: 'The Reserve Bank of India has decided to keep the repo rate unchanged at 6.5% in its latest monetary policy committee meeting. The decision was unanimous and reflects the central bank\'s cautious approach to inflation management.',
+        imageUrl: 'https://via.placeholder.com/300x200?text=RBI+Policy',
+        sourceUrl: 'https://example.com/news/2',
+        source: 'Economic Times',
+        publishedAt: DateTime.now().subtract(const Duration(hours: 4)),
+        tags: ['RBI', 'Interest Rates', 'Monetary Policy'],
+        category: 'Economy',
+      ),
+      NewsArticle(
+        id: '3',
+        title: 'Reliance Industries reports strong Q2 earnings',
+        summary: 'Oil-to-telecom giant beats analyst estimates with robust performance across segments.',
+        content: 'Reliance Industries Limited reported strong second quarter earnings, beating analyst estimates. The company\'s retail and digital services segments showed particularly strong growth, offsetting some weakness in the petrochemicals business.',
+        imageUrl: 'https://via.placeholder.com/300x200?text=Reliance+Earnings',
+        sourceUrl: 'https://example.com/news/3',
+        source: 'Business Standard',
+        publishedAt: DateTime.now().subtract(const Duration(hours: 6)),
+        tags: ['Reliance', 'Earnings', 'Q2 Results'],
+        category: 'Corporate',
+      ),
+      NewsArticle(
+        id: '4',
+        title: 'IT sector outlook remains positive despite global headwinds',
+        summary: 'Indian IT companies expected to maintain growth momentum in coming quarters.',
+        content: 'Despite global economic uncertainties, Indian IT services companies are expected to maintain their growth trajectory. Strong demand for digital transformation services and cost optimization continue to drive business.',
+        imageUrl: 'https://via.placeholder.com/300x200?text=IT+Sector',
+        sourceUrl: 'https://example.com/news/4',
+        source: 'Mint',
+        publishedAt: DateTime.now().subtract(const Duration(hours: 8)),
+        tags: ['IT Sector', 'Technology', 'Growth'],
+        category: 'Sectors',
+      ),
+    ];
+  }
+
+  static List<MarketIndex> getMockIndices() {
+    return [
+      MarketIndex(
+        name: 'Sensex',
+        symbol: 'BSE:SENSEX',
+        value: 64125.78,
+        change: 234.56,
+        changePercent: 0.37,
+        lastUpdated: DateTime.now(),
+      ),
+      MarketIndex(
+        name: 'Nifty 50',
+        symbol: 'NSE:NIFTY',
+        value: 19087.45,
+        change: 67.89,
+        changePercent: 0.36,
+        lastUpdated: DateTime.now(),
+      ),
+      MarketIndex(
+        name: 'Bank Nifty',
+        symbol: 'NSE:BANKNIFTY',
+        value: 44567.23,
+        change: -123.45,
+        changePercent: -0.28,
+        lastUpdated: DateTime.now(),
+      ),
+      MarketIndex(
+        name: 'Nifty IT',
+        symbol: 'NSE:CNXIT',
+        value: 29876.54,
+        change: 345.67,
+        changePercent: 1.17,
+        lastUpdated: DateTime.now(),
+      ),
+    ];
+  }
+}
